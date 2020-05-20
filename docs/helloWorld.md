@@ -26,11 +26,14 @@ export default () => {
         target: 'v2',
       },
     ];
-    graph
-      .pipe()
-      .insertVertex(vertexs)
-      .insertEdge(edges)
-      .pipeEnd();
+    graph.setVertexs(vertexs);
+    graph.setEdges(edges);
+    graph.render();
+    // graph
+    //   .pipe()
+    //   .insertVertex(vertexs)
+    //   .insertEdge(edges)
+    //   .pipeEnd();
   }, []);
   return <div id="container"></div>;
 };
