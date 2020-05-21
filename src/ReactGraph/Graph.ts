@@ -1,5 +1,5 @@
-import { mxGraph, mxPoint } from './dependence';
-import { EdgeProp, mxCell, VertexProp, portNum } from './interface';
+import { mxGraph, mxPoint, mxRubberband } from './dependence';
+import { mxCell, portNum } from './interface';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_SIZE } from './constant';
 
 class Graph {
@@ -10,6 +10,22 @@ class Graph {
     this.graph = new mxGraph(document.getElementById(id));
     this.graph.setConnectable(true);
   }
+  /**
+   * rubberBand
+   */
+  protected setRubberBand() {
+    new mxRubberband(this.graph);
+  }
+  /**
+   * 设置是否 connect
+   */
+  protected setConnectable = (connectable: boolean) => {
+    this.graph.setConnectable(connectable);
+    this.graph.refresh();
+  };
+  /**
+   * 获取 parent
+   */
   protected getDefaultParent = () => {
     return this.graph?.getDefaultParent();
   };
@@ -64,6 +80,7 @@ class Graph {
         style,
         relative,
       );
+      this.vertexs[name].setConnectable(false);
     } catch {
       throw 'insert failed, please check vertexs';
     }

@@ -1,6 +1,5 @@
-import { mxCell, portNum, VertexProp, EdgeProp } from './interface';
+import { VertexProp, EdgeProp } from './interface';
 import Graph from './Graph';
-import { mxRubberband, mxPoint } from './dependence';
 import { transformStyle } from './util';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_NUMBER } from './constant';
 
@@ -10,11 +9,29 @@ export default class ReactGraph extends Graph {
   constructor(id: string) {
     super(id);
   }
+  /**
+   * 设置 edges
+   */
   setEdges = (edges: EdgeProp[]) => {
     this.bufferEdges = edges;
   };
+  /**
+   * 设置 vertexs
+   */
   setVertexs = (vertexs: VertexProp[]) => {
     this.bufferVertexs = vertexs;
+  };
+  /**
+   * 设置 edges 和 vertexs
+   */
+  data = (data: { edges?: EdgeProp[]; vertexs?: VertexProp[] }) => {
+    const { edges, vertexs } = data;
+    if (vertexs) {
+      this.setVertexs(vertexs);
+    }
+    if (edges) {
+      this.setEdges(edges);
+    }
   };
   /**
    * 渲染函数
@@ -74,7 +91,4 @@ export default class ReactGraph extends Graph {
     });
     this.graph.getModel().endUpdate();
   };
-  setRubberBand() {
-    new mxRubberband(this.graph);
-  }
 }
