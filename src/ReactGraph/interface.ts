@@ -22,3 +22,15 @@ export interface EdgeProp {
   target: string;
   style?: CSSProperties;
 }
+export interface SVRStyleProps {
+  align?: string;
+  fillColor?: string;
+  fontColor?: string;
+  shape?: string;
+  strokeColor?: string;
+  strokeWidth?: string | number;
+  verticalAlign?: string;
+  fontSize?: string | number;
+  rounded?: boolean;
+  arcSize?: number;
+}

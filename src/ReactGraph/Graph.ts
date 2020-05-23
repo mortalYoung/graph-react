@@ -1,11 +1,14 @@
-import { mxGraph, mxPoint, mxRubberband } from './dependence';
+import { mxGraph, mxPoint, mxRubberband, mxStylesheet } from './dependence';
 import { mxCell, portNum } from './interface';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_SIZE } from './constant';
 
 class Graph {
+  public createPorts: ((node: mxCell, num: number) => void) | null = null;
+
   protected graph: any;
-  protected createPorts: ((node: mxCell, num: number) => void) | null = null;
-  private vertexs: Record<string, mxCell> = {};
+  protected vertexs: Record<string, mxCell> = {};
+  protected edges: mxCell[] = [];
+
   constructor(id: string) {
     this.graph = new mxGraph(document.getElementById(id));
     this.graph.setConnectable(true);
@@ -41,14 +44,18 @@ class Graph {
     id?: string,
   ) => {
     try {
-      this.graph.insertEdge(
-        parent,
-        id,
-        value,
-        this.vertexs[source],
-        this.vertexs[target],
-        style,
+      const edges: mxCell[] = [];
+      edges.push(
+        this.graph.insertEdge(
+          parent,
+          id,
+          value,
+          this.vertexs[source],
+          this.vertexs[target],
+          style,
+        ),
       );
+      this.edges = edges;
     } catch (error) {
       throw 'insert failed, please check edges';
     }
@@ -110,24 +117,24 @@ class Graph {
       }
       const upNumber = num / 2;
       ports.forEach((port, index) => {
+        const height = port.parent.geometry.height;
+        const width = port.parent.geometry.width;
         const offsetY =
           index < upNumber
-            ? -DEFAULT_VERTEX_SIZE.heigth - DEFAULT_PORT_SIZE.height / 2
+            ? -height - DEFAULT_PORT_SIZE.height / 2
             : -DEFAULT_PORT_SIZE.height / 2;
         let offsetX = 0;
         if (num === 2) {
-          offsetX = (-DEFAULT_VERTEX_SIZE.width - DEFAULT_PORT_SIZE.width) / 2;
+          offsetX = (-width - DEFAULT_PORT_SIZE.width) / 2;
         } else if (num === 4) {
-          offsetX =
-            -(index % upNumber) * DEFAULT_VERTEX_SIZE.width -
-            DEFAULT_PORT_SIZE.width / 2;
+          offsetX = -(index % upNumber) * width - DEFAULT_PORT_SIZE.width / 2;
         } else {
           offsetX =
-            (-(index % upNumber) * DEFAULT_VERTEX_SIZE.width) / 2 -
-            DEFAULT_PORT_SIZE.width / 2;
+            (-(index % upNumber) * width) / 2 - DEFAULT_PORT_SIZE.width / 2;
         }
         port.geometry.offset = new mxPoint(offsetX, offsetY);
         port.geometry.relative = true;
+        port.setStyle('defaultPort');
       });
     }
   }

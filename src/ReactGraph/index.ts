@@ -1,6 +1,7 @@
-import { VertexProp, EdgeProp } from './interface';
+import { VertexProp, EdgeProp, SVRStyleProps, mxCell } from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
+import { mxStylesheet } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_NUMBER } from './constant';
 
 export default class ReactGraph extends Graph {
@@ -9,6 +10,28 @@ export default class ReactGraph extends Graph {
   constructor(id: string) {
     super(id);
   }
+  /**
+   * 设置 vertexs 全局样式
+   */
+  setVertexStyles = (styles: SVRStyleProps) => {
+    const defaultStyle = new mxStylesheet().getDefaultVertexStyle();
+    const stylesheet = {
+      ...defaultStyle,
+      ...styles,
+    };
+    this.graph.getStylesheet().putCellStyle('defaultVertex', stylesheet);
+  };
+  /**
+   * 设置 ports 全局样式
+   */
+  setPortsStyles = (styles: SVRStyleProps) => {
+    const defaultStyle = new mxStylesheet().getDefaultVertexStyle();
+    const stylesheet = {
+      ...defaultStyle,
+      ...styles,
+    };
+    this.graph.getStylesheet().putCellStyle('defaultPort', stylesheet);
+  };
   /**
    * 设置 edges
    */
@@ -68,6 +91,7 @@ export default class ReactGraph extends Graph {
         relative,
         id,
       );
+      v.setStyle('defaultVertex'); // 设置 vertex 的样式
       if (!!isConnected) {
         const parentNode = v;
         this.defaultCreatePorts(
