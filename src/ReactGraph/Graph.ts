@@ -1,6 +1,7 @@
-import { mxGraph, mxPoint, mxRubberband, mxStylesheet } from './dependence';
+import { mxGraph, mxPoint, mxRubberband, mxUtils } from './dependence';
 import { mxCell, portNum } from './interface';
-import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_SIZE } from './constant';
+import { DEFAULT_PORT_SIZE } from './constant';
+import { getCellType } from './util';
 
 class Graph {
   public createPorts: ((node: mxCell, num: number) => void) | null = null;
@@ -12,7 +13,94 @@ class Graph {
   constructor(id: string) {
     this.graph = new mxGraph(document.getElementById(id));
     this.graph.setConnectable(true);
+    const graph = this.graph;
+    const mouseListen = {
+      currentTmp: null,
+      previousStyle: null, // 用于存储 hover 之前的样式
+      mouseDown: () => {},
+      mouseMove: (sender: any, me: any) => {
+        const tmp = graph.view.getState(me.getCell());
+        if (
+          tmp &&
+          tmp !== mouseListen.currentTmp &&
+          mouseListen.currentTmp === null
+        ) {
+          mouseListen.moveIn(tmp);
+          mouseListen.currentTmp = tmp;
+        }
+        if (tmp !== mouseListen.currentTmp) {
+          mouseListen.moveOut(mouseListen.currentTmp);
+          mouseListen.currentTmp = null;
+        }
+      },
+      mouseUp: () => {},
+      moveIn: (tmp: any) => {
+        if (tmp) {
+          mouseListen.previousStyle = tmp.style;
+          tmp.style = mxUtils.clone(tmp.style);
+          this.updateStyle(tmp, true);
+          tmp.shape.apply(tmp);
+          tmp.shape.redraw();
+          if (tmp.text != null) {
+            tmp.text.apply(tmp);
+            tmp.text.redraw();
+          }
+        }
+      },
+      moveOut: (tmp: any) => {
+        if (tmp) {
+          tmp.style = mouseListen.previousStyle;
+          this.updateStyle(tmp, false);
+          tmp.shape.apply(tmp);
+          tmp.shape.redraw();
+          if (tmp.text != null) {
+            tmp.text.apply(tmp);
+            tmp.text.redraw();
+          }
+        }
+      },
+    };
+    this.graph.addMouseListener(mouseListen);
   }
+  /**
+   * 存储 style, 用以快速应用 style
+   */
+  protected saveStyle = (name: string, style: Record<string, string>) => {
+    this.graph.getStylesheet().putCellStyle(name, style);
+  };
+  /**
+   * hover 时候 更新 style
+   */
+  private updateStyle = (tmp: any, status: boolean) => {
+    if (status) {
+      const type = getCellType(tmp.cell);
+      if (type === 'vertex') {
+        const hoverStyle = this.graph
+          .getStylesheet()
+          .getCellStyle('defaultVertex:hover');
+        tmp.style = {
+          ...tmp.style,
+          ...hoverStyle,
+        };
+      } else if (type === 'port') {
+        const hoverStyle = this.graph
+          .getStylesheet()
+          .getCellStyle('defaultPort:hover');
+        tmp.style = {
+          ...tmp.style,
+          ...hoverStyle,
+        };
+      } else if (type === 'edge') {
+        const hoverStyle = this.graph
+          .getStylesheet()
+          .getCellStyle('defaultEdge:hover');
+        tmp.style = {
+          ...tmp.style,
+          ...hoverStyle,
+        };
+      }
+    }
+  };
   /**
    * rubberBand
    */
@@ -44,21 +132,19 @@ class Graph {
     id?: string,
   ) => {
     try {
-      const edges: mxCell[] = [];
-      edges.push(
-        this.graph.insertEdge(
-          parent,
-          id,
-          value,
-          this.vertexs[source],
-          this.vertexs[target],
-          style,
-        ),
+      const edge = this.graph.insertEdge(
+        parent,
+        id,
+        value,
+        this.vertexs[source],
+        this.vertexs[target],
+        style,
       );
-      this.edges = edges;
+      this.edges.push(edge);
     } catch (error) {
       throw 'insert failed, please check edges';
     }
+    return this.edges[this.edges.length - 1];
   };
   /**
    * 插入 vertex
@@ -135,6 +221,7 @@ class Graph {
         port.geometry.offset = new mxPoint(offsetX, offsetY);
         port.geometry.relative = true;
         port.setStyle('defaultPort');
+        port.port = true;
       });
     }
   }

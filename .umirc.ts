@@ -1,8 +1,10 @@
 import { defineConfig } from 'dumi';
 
 export default defineConfig({
-  title: 'Library Name',
+  title: 'React Graph',
   outputPath: 'build',
-  publicPath: './',
+  exportStatic: {},
+  publicPath: '/react-graph/',
+  base: '/react-graph',
   // more config: https://d.umijs.org/config
 });

@@ -40,3 +40,13 @@ export default () => {
   return <div id="helloworld"></div>;
 };
 ```
+
+## API
+
+### Function
+
+<!-- prettier-ignore-start -->
+| 函数名 | 说明 | 类型 | 默认值 |
+| ----- | ---- | ---- | ----- |
+| setRubberBand | 设置 `rubberBand` | `() => void` | `Function` |
+<!-- prettier-ignore-end -->

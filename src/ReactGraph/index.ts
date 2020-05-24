@@ -1,4 +1,4 @@
-import { VertexProp, EdgeProp, SVRStyleProps, mxCell } from './interface';
+import { VertexProp, EdgeProp, styleProps } from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
 import { mxStylesheet } from './dependence';
@@ -13,24 +13,44 @@ export default class ReactGraph extends Graph {
   /**
    * 设置 vertexs 全局样式
    */
-  setVertexStyles = (styles: SVRStyleProps) => {
+  setVertexStyles = (styles: styleProps) => {
     const defaultStyle = new mxStylesheet().getDefaultVertexStyle();
-    const stylesheet = {
+    this.saveStyle('defaultVertex', {
       ...defaultStyle,
-      ...styles,
-    };
-    this.graph.getStylesheet().putCellStyle('defaultVertex', stylesheet);
+      ...styles.default,
+    });
+    this.saveStyle('defaultVertex:hover', {
+      ...defaultStyle,
+      ...styles.hover,
+    });
   };
   /**
    * 设置 ports 全局样式
    */
-  setPortsStyles = (styles: SVRStyleProps) => {
+  setPortStyles = (styles: styleProps) => {
     const defaultStyle = new mxStylesheet().getDefaultVertexStyle();
-    const stylesheet = {
+    this.saveStyle('defaultPort', {
       ...defaultStyle,
-      ...styles,
-    };
-    this.graph.getStylesheet().putCellStyle('defaultPort', stylesheet);
+      ...styles.default,
+    });
+    this.saveStyle('defaultPort:hover', {
+      ...defaultStyle,
+      ...styles.hover,
+    });
+  };
+  /**
+   * 设置 edges 全局样式
+   */
+  setEdgeStyles = (styles: styleProps) => {
+    const defaultStyle = new mxStylesheet().getDefaultEdgeStyle();
+    this.saveStyle('defaultEdge', {
+      ...defaultStyle,
+      ...styles.default,
+    });
+    this.saveStyle('defaultEdge:hover', {
+      ...defaultStyle,
+      ...styles.hover,
+    });
   };
   /**
    * 设置 edges
@@ -111,7 +131,8 @@ export default class ReactGraph extends Graph {
         style,
       } = edge;
       const stringStyle = transformStyle(style);
-      this.insertEdge(parent, value, source, target, stringStyle, id);
+      const e = this.insertEdge(parent, value, source, target, stringStyle, id);
+      e.setStyle('defaultEdge');
     });
     this.graph.getModel().endUpdate();
   };

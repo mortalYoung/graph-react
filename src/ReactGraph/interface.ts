@@ -22,7 +22,7 @@ export interface EdgeProp {
   target: string;
   style?: CSSProperties;
 }
-export interface SVRStyleProps {
+export interface SVRStyleProps extends Partial<CSSProperties> {
   align?: string;
   fillColor?: string;
   fontColor?: string;
@@ -33,4 +33,13 @@ export interface SVRStyleProps {
   fontSize?: string | number;
   rounded?: boolean;
   arcSize?: number;
+}
+export interface styleProps {
+  default: SVRStyleProps;
+  hover?: SVRStyleProps;
+}
+export interface ListenProps {
+  mouseDown: Function;
+  mouseUp: Function;
+  mouseMove: Function;
 }

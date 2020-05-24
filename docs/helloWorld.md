@@ -79,7 +79,7 @@ export default () => {
 
 ## API
 
-### function
+### Function
 
 <!-- prettier-ignore-start -->
 | 函数名 | 说明 | 类型 | 默认值 |
@@ -90,7 +90,7 @@ export default () => {
 | render | 异步渲染 | `() => void` | `Function` |
 <!-- prettier-ignore-end -->
 
-### interface
+### Interface
 
 <!-- prettier-ignore-start -->
 ```typescript

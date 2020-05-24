@@ -105,7 +105,7 @@ export default () => {
 
 ## API
 
-## Function
+### Function
 
 <!-- prettier-ignore-start -->
 | 函数名 | 说明 | 类型 | 默认值 |

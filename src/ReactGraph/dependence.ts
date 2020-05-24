@@ -7,5 +7,19 @@ const {
   mxConstants,
   mxStylesheet,
   mxUtils,
+  mxGraphHandler,
+  mxCellTracker,
+  mxCellHighlight,
 } = mxObject;
-export { mxGraph, mxRubberband, mxPoint, mxConstants, mxStylesheet, mxUtils };
+mxConstants.HIGHLIGHT_OPACITY = 0;
+export {
+  mxGraph,
+  mxRubberband,
+  mxPoint,
+  mxConstants,
+  mxStylesheet,
+  mxUtils,
+  mxGraphHandler,
+  mxCellTracker,
+  mxCellHighlight,
+};
