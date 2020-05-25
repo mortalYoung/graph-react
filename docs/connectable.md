@@ -63,8 +63,6 @@ import react, { useRef, useEffect, useState } from 'react';
 import ReactGraph from 'react-graph';
 
 export default () => {
-  const [connectable, setConnectable] = useState(true);
-  const reactGraph = useRef();
   useEffect(() => {
     const graph = new ReactGraph('connect');
     const data = {
@@ -93,7 +91,6 @@ export default () => {
     };
     graph.data(data);
     graph.render();
-    reactGraph.current = graph;
   }, []);
   return (
     <>

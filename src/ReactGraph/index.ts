@@ -1,8 +1,14 @@
-import { VertexProp, EdgeProp, styleProps } from './interface';
+import {
+  VertexProp,
+  EdgeProp,
+  styleProps,
+  PortProp,
+  mxCell,
+} from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
 import { mxStylesheet } from './dependence';
-import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_NUMBER } from './constant';
+import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
 
 export default class ReactGraph extends Graph {
   private bufferVertexs: VertexProp[] = [];
@@ -96,7 +102,7 @@ export default class ReactGraph extends Graph {
         height = DEFAULT_VERTEX_SIZE.heigth,
         relative = false,
         style,
-        isConnected = true,
+        ports,
       } = vertex;
       const stringStyle = transformStyle(style);
       const v = this.insertVertex(
@@ -112,12 +118,11 @@ export default class ReactGraph extends Graph {
         id,
       );
       v.setStyle('defaultVertex'); // 设置 vertex 的样式
-      if (!!isConnected) {
-        const parentNode = v;
-        this.defaultCreatePorts(
-          parentNode,
-          typeof isConnected === 'number' ? isConnected : DEFAULT_PORT_NUMBER,
-        );
+      if (!ports) {
+        const ports: PortProp[] = DEFAULT_PORT_LAYOUT(width, height);
+        this.createPorts(v, ports);
+      } else {
+        this.createPorts(v, ports);
       }
     });
     // 渲染 edges
@@ -131,7 +136,24 @@ export default class ReactGraph extends Graph {
         style,
       } = edge;
       const stringStyle = transformStyle(style);
-      const e = this.insertEdge(parent, value, source, target, stringStyle, id);
+      const [sourceRoot, sourcePort] = source.split('.');
+      const [targetRoot, targetPort] = target.split('.');
+      const sourceCell =
+        this.vertexs[sourceRoot].children.find(
+          (child: mxCell) => child.name === sourcePort,
+        ) || this.vertexs[sourceRoot];
+      const targetCell =
+        this.vertexs[targetRoot].children.find(
+          (child: mxCell) => child.name === targetPort,
+        ) || this.vertexs[targetRoot];
+      const e = this.insertEdge(
+        parent,
+        value,
+        sourceCell,
+        targetCell,
+        stringStyle,
+        id,
+      );
       e.setStyle('defaultEdge');
     });
     this.graph.getModel().endUpdate();

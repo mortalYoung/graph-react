@@ -1,11 +1,9 @@
 import { mxGraph, mxPoint, mxRubberband, mxUtils } from './dependence';
-import { mxCell, portNum } from './interface';
+import { mxCell, PortProp } from './interface';
 import { DEFAULT_PORT_SIZE } from './constant';
 import { getCellType } from './util';
 
 class Graph {
-  public createPorts: ((node: mxCell, num: number) => void) | null = null;
-
   protected graph: any;
   protected vertexs: Record<string, mxCell> = {};
   protected edges: mxCell[] = [];
@@ -74,26 +72,10 @@ class Graph {
   private updateStyle = (tmp: any, status: boolean) => {
     if (status) {
       const type = getCellType(tmp.cell);
-      if (type === 'vertex') {
+      if (type !== 'unknown') {
         const hoverStyle = this.graph
           .getStylesheet()
-          .getCellStyle('defaultVertex:hover');
-        tmp.style = {
-          ...tmp.style,
-          ...hoverStyle,
-        };
-      } else if (type === 'port') {
-        const hoverStyle = this.graph
-          .getStylesheet()
-          .getCellStyle('defaultPort:hover');
-        tmp.style = {
-          ...tmp.style,
-          ...hoverStyle,
-        };
-      } else if (type === 'edge') {
-        const hoverStyle = this.graph
-          .getStylesheet()
-          .getCellStyle('defaultEdge:hover');
+          .getCellStyle(`default${type}:hover`);
         tmp.style = {
           ...tmp.style,
           ...hoverStyle,
@@ -136,8 +118,8 @@ class Graph {
         parent,
         id,
         value,
-        this.vertexs[source],
-        this.vertexs[target],
+        source,
+        target,
         style,
       );
       this.edges.push(edge);
@@ -180,49 +162,29 @@ class Graph {
     return this.vertexs[name];
   };
   /**
-   * 创建 ports 默认布局有 2，4，6 三种
+   * 创建 ports
    */
-  protected defaultCreatePorts(node: mxCell, num: portNum) {
-    // 如果提供了自定义创建 ports 则使用自定义创建 ports 函数
-    if (this.createPorts) {
-      this.createPorts(node, num);
-    } else {
-      const ports: mxCell[] = [];
-      for (let index = 0; index < num; index++) {
-        ports.push(
-          this.graph.insertVertex(
-            node,
-            null,
-            '',
-            1,
-            1,
-            DEFAULT_PORT_SIZE.width,
-            DEFAULT_PORT_SIZE.height,
-          ),
-        );
-      }
-      const upNumber = num / 2;
-      ports.forEach((port, index) => {
-        const height = port.parent.geometry.height;
-        const width = port.parent.geometry.width;
-        const offsetY =
-          index < upNumber
-            ? -height - DEFAULT_PORT_SIZE.height / 2
-            : -DEFAULT_PORT_SIZE.height / 2;
-        let offsetX = 0;
-        if (num === 2) {
-          offsetX = (-width - DEFAULT_PORT_SIZE.width) / 2;
-        } else if (num === 4) {
-          offsetX = -(index % upNumber) * width - DEFAULT_PORT_SIZE.width / 2;
-        } else {
-          offsetX =
-            (-(index % upNumber) * width) / 2 - DEFAULT_PORT_SIZE.width / 2;
-        }
-        port.geometry.offset = new mxPoint(offsetX, offsetY);
-        port.geometry.relative = true;
-        port.setStyle('defaultPort');
-        port.port = true;
-      });
+  protected createPorts(node: mxCell, ports: PortProp[]) {
+    const num = ports.length;
+    for (let index = 0; index < num; index++) {
+      const portSetting = ports[index];
+      const port = this.graph.insertVertex(
+        node,
+        null,
+        '',
+        0,
+        0,
+        portSetting.width || DEFAULT_PORT_SIZE.width,
+        portSetting.height || DEFAULT_PORT_SIZE.height,
+      );
+      port.geometry.offset = new mxPoint(
+        portSetting.offsetX,
+        portSetting.offsetY,
+      );
+      port.geometry.relative = true;
+      port.setStyle('defaultPort');
+      port.port = true;
+      port.name = portSetting.name;
     }
   }
 }

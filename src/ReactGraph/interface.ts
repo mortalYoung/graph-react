@@ -1,6 +1,5 @@
 import { CSSProperties } from 'react';
 export type mxCell = any;
-export type portNum = 2 | 4 | 6;
 export interface VertexProp {
   name: string;
   parent?: mxCell;
@@ -12,7 +11,7 @@ export interface VertexProp {
   height?: number;
   style?: CSSProperties;
   relative?: boolean;
-  isConnected?: portNum | boolean;
+  ports?: PortProp[];
 }
 export interface EdgeProp {
   parent?: mxCell;
@@ -21,6 +20,13 @@ export interface EdgeProp {
   source: string;
   target: string;
   style?: CSSProperties;
+}
+export interface PortProp {
+  name: string;
+  width?: number;
+  height?: number;
+  offsetX?: number;
+  offsetY?: number;
 }
 export interface SVRStyleProps extends Partial<CSSProperties> {
   align?: string;

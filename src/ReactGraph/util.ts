@@ -15,11 +15,11 @@ export const transformStyle = (style?: Record<string, any>) => {
 export const getCellType = (cell: mxCell) => {
   if (!cell) return 'unknown';
   if (cell.port) {
-    return 'port';
+    return 'Port';
   } else if (cell.vertex) {
-    return 'vertex';
+    return 'Vertex';
   } else if (cell.edge) {
-    return 'edge';
+    return 'Edge';
   } else {
     return 'unknown';
   }

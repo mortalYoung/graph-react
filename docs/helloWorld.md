@@ -105,7 +105,7 @@ interface VertexProp {
   height?: number;                      // 高度, 默认为 30px
   style?: CSSProperties;                // 样式
   relative?: boolean;                   // 是否为 relative, 默认为 false
-  isConnected?: portNum | boolean;      // 是否为可连接, 默认为 false
+  ports?: PortProp[]                    // vertex 上的 ports
 }
 ```
 -------
