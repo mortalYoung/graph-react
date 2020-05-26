@@ -1,3 +1,10 @@
+---
+group:
+  title: 介绍
+title: 入门上手
+order: 2
+---
+
 ## hello world
 
 通过调用 `setVertexs` 以及 `setEdges`, 最后调用 `render` 函数实现异步数据渲染

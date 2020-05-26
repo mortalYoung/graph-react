@@ -1,3 +1,10 @@
+---
+group:
+  title: 使用方法
+title: 连接
+order: 1
+---
+
 ## connectable
 
 默认设置全局 `connectable` 为 `true`

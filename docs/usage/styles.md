@@ -1,3 +1,8 @@
+---
+title: 样式
+order: 4
+---
+
 ## styles
 
 通过设置 `setVertexStyles, setPortStyles, setEdgeStyles` 可以分别对 `vertex, port, edge` 修改样式
