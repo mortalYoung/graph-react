@@ -13,9 +13,11 @@ import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
 export default class ReactGraph extends Graph {
   private bufferVertexs: VertexProp[] = [];
   private bufferEdges: EdgeProp[] = [];
+
   constructor(id: string) {
     super(id);
   }
+
   /**
    * 设置 vertexs 全局样式
    */
@@ -30,6 +32,7 @@ export default class ReactGraph extends Graph {
       ...styles.hover,
     });
   };
+
   /**
    * 设置 ports 全局样式
    */
@@ -44,6 +47,7 @@ export default class ReactGraph extends Graph {
       ...styles.hover,
     });
   };
+
   /**
    * 设置 edges 全局样式
    */
@@ -58,18 +62,21 @@ export default class ReactGraph extends Graph {
       ...styles.hover,
     });
   };
+
   /**
    * 设置 edges
    */
   setEdges = (edges: EdgeProp[]) => {
     this.bufferEdges = edges;
   };
+
   /**
    * 设置 vertexs
    */
   setVertexs = (vertexs: VertexProp[]) => {
     this.bufferVertexs = vertexs;
   };
+
   /**
    * 设置 edges 和 vertexs
    */
@@ -82,6 +89,7 @@ export default class ReactGraph extends Graph {
       this.setEdges(edges);
     }
   };
+
   /**
    * 渲染函数
    */
@@ -125,6 +133,7 @@ export default class ReactGraph extends Graph {
         this.createPorts(v, ports);
       }
     });
+
     // 渲染 edges
     edges.forEach(edge => {
       const {

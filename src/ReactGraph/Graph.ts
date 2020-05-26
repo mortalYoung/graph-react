@@ -60,12 +60,14 @@ class Graph {
     };
     this.graph.addMouseListener(mouseListen);
   }
+
   /**
    * 存储 style, 用以快速应用 style
    */
   protected saveStyle = (name: string, style: Record<string, string>) => {
     this.graph.getStylesheet().putCellStyle(name, style);
   };
+
   /**
    * hover 时候 更新 style
    */
@@ -83,12 +85,14 @@ class Graph {
       }
     }
   };
+
   /**
    * rubberBand
    */
   protected setRubberBand() {
     new mxRubberband(this.graph);
   }
+
   /**
    * 设置是否 connect
    */
@@ -96,12 +100,14 @@ class Graph {
     this.graph.setConnectable(connectable);
     this.graph.refresh();
   };
+
   /**
    * 获取 parent
    */
   protected getDefaultParent = () => {
     return this.graph?.getDefaultParent();
   };
+
   /**
    * 插入 edge
    */
@@ -128,6 +134,7 @@ class Graph {
     }
     return this.edges[this.edges.length - 1];
   };
+
   /**
    * 插入 vertex
    */
@@ -161,6 +168,7 @@ class Graph {
     }
     return this.vertexs[name];
   };
+
   /**
    * 创建 ports
    */
