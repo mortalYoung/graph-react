@@ -89,7 +89,69 @@ export default class GraphReact extends Graph {
       this.setEdges(edges);
     }
   };
-
+  /**
+   * 获取 vertexs
+   */
+  getVertexs = () => {
+    return this.vertexs;
+  };
+  /**
+   * 获取 edges
+   */
+  getEdges = (name?: string, source: boolean = true) => {
+    const result: any[] = [];
+    if (name) {
+      const vertexs = this.vertexs;
+      const current = vertexs[name];
+      // 找到连接在 port 上的 edge
+      const ports = current.children.filter((item: mxCell) => item.port);
+      ports.forEach((item: mxCell) => {
+        if (item.edges) {
+          result.push(...item.edges);
+        }
+      });
+      // 再找 连接在本体上的 edge, 做兼容
+      result.push(...(current.edges || []));
+      if (source) {
+        return result.filter(
+          edge => edge.source.parent === current || edge.source === current,
+        );
+      } else {
+        return result.filter(
+          edge => edge.target.parent === current || edge.target === current,
+        );
+      }
+    } else {
+      return this.edges;
+    }
+  };
+  /**
+   * 获取 ports
+   */
+  getPorts = (name: string) => {
+    if (name) {
+      const current = this.vertexs[name];
+      if (current) {
+        return current.children;
+      }
+    }
+    throw 'cannot find ports without vertex name';
+  };
+  /**
+   * 获取 parent 节点
+   */
+  getParent = (name?: string) => {
+    if (name) {
+      const current = this.vertexs[name];
+      if (current) {
+        return current.parent;
+      } else {
+        throw 'please check your name of getParent';
+      }
+    } else {
+      return this.getDefaultParent();
+    }
+  };
   /**
    * 渲染函数
    */
