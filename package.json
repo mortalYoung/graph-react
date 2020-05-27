@@ -1,7 +1,11 @@
 {
-  "private": true,
-  "name": "react-graph",
+  "private": false,
+  "name": "graph-react",
   "homepage": "http://mortalYoung.github.io/react-graph",
+  "version": "0.0.1",
+  "author": "mortalYoung",
+  "license": "ISC",
+  "description": "a graph generator based on mxGraph",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -21,6 +25,13 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mortalYoung/react-graph"
+  },
+  "bugs": {
+    "url": "https://github.com/mortalYoung/react-graph/issues"
   },
   "config": {
     "commitizen": {
@@ -54,5 +65,12 @@
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "yorkie": "^2.0.0"
-  }
+  },
+  "keywords": [
+    "react",
+    "mxgraph",
+    "react-graph",
+    "graph",
+    "react-component"
+  ]
 }
