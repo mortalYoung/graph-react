@@ -11,11 +11,11 @@ order: 2
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('container');
+    const graph = new GraphReact('container');
     const vertexs = [
       {
         name: 'v1',
@@ -50,11 +50,11 @@ export default () => {
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('helloworld');
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {

@@ -15,13 +15,13 @@ order: 1
 
 ```jsx
 import react, { useRef, useEffect, useState } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   const [connectable, setConnectable] = useState(true);
-  const reactGraph = useRef();
+  const graphReact = useRef();
   useEffect(() => {
-    const graph = new ReactGraph('helloworld');
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {
@@ -46,10 +46,10 @@ export default () => {
     };
     graph.data(data);
     graph.render();
-    reactGraph.current = graph;
+    graphReact.current = graph;
   }, []);
   const handleToggle = () => {
-    reactGraph.current.setConnectable(!connectable);
+    graphReact.current.setConnectable(!connectable);
     setConnectable(!connectable);
   };
   return (
@@ -67,11 +67,11 @@ export default () => {
 
 ```jsx
 import react, { useRef, useEffect, useState } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('connect');
+    const graph = new GraphReact('connect');
     const data = {
       vertexs: [
         {

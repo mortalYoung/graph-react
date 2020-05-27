@@ -1,10 +1,11 @@
-# react-graph
+# graph-react
 
 ## Getting Started
 
 本项目基于 `dumi`, `mxgraph`, `react` 实现
 
 ---
+
 Install dependencies,
 
 ```bash

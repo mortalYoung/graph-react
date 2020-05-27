@@ -5,21 +5,21 @@ order: 1
 
 ## 上手
 
-安装 `react-graph` 到项目中
+安装 `graph-react` 到项目中
 
 ```bash
-$ npm install --save-dev react-graph
+$ npm install --save-dev graph-react
 ```
 
 复制以下代码到你的 `.tsx` 文件中
 
 ```js
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('helloworld');
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {

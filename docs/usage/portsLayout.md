@@ -21,11 +21,11 @@ order: 2
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('helloworld');
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {
@@ -59,11 +59,11 @@ export default () => {
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('portsLayout');
+    const graph = new GraphReact('portsLayout');
     const data = {
       vertexs: [
         {
@@ -113,11 +113,11 @@ export default () => {
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('portEdge');
+    const graph = new GraphReact('portEdge');
     const data = {
       vertexs: [
         {

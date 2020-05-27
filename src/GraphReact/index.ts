@@ -10,7 +10,7 @@ import { transformStyle } from './util';
 import { mxStylesheet } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
 
-export default class ReactGraph extends Graph {
+export default class GraphReact extends Graph {
   private bufferVertexs: VertexProp[] = [];
   private bufferEdges: EdgeProp[] = [];
 

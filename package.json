@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "graph-react",
-  "homepage": "http://mortalYoung.github.io/react-graph",
+  "homepage": "http://mortalYoung.github.io/graph-react",
   "version": "0.0.1",
   "author": "mortalYoung",
   "license": "ISC",
@@ -28,10 +28,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mortalYoung/react-graph"
+    "url": "git+https://github.com/mortalYoung/graph-react"
   },
   "bugs": {
-    "url": "https://github.com/mortalYoung/react-graph/issues"
+    "url": "https://github.com/mortalYoung/graph-react/issues"
   },
   "config": {
     "commitizen": {

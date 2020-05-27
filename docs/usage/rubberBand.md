@@ -7,15 +7,15 @@ order: 3
 
 > rubber band 意为 n.橡皮圈;橡皮筋
 
-在 `react-graph` 中即为鼠标拖拽经常的规则矩形
+在 `graph-react` 中即为鼠标拖拽经常的规则矩形
 
 ```jsx
 import react, { useEffect } from 'react';
-import ReactGraph from 'react-graph';
+import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new ReactGraph('helloworld');
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {
