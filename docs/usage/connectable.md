@@ -2,7 +2,7 @@
 group:
   title: 使用方法
 title: 连接
-order: 1
+order: 2
 ---
 
 ## connectable

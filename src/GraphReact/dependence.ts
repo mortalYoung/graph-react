@@ -10,6 +10,7 @@ const {
   mxGraphHandler,
   mxCellTracker,
   mxCellHighlight,
+  mxOutline,
 } = mxObject;
 mxConstants.HIGHLIGHT_OPACITY = 0;
 export {
@@ -22,4 +23,5 @@ export {
   mxGraphHandler,
   mxCellTracker,
   mxCellHighlight,
+  mxOutline,
 };

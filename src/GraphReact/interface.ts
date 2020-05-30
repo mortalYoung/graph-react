@@ -1,5 +1,11 @@
 import { CSSProperties } from 'react';
 export type mxCell = any;
+export interface IOptionsProps {
+  thumbnail?: string;
+  movable?: boolean;
+  resizable?: boolean;
+  editable?: boolean;
+}
 export interface VertexProp {
   name: string;
   parent?: mxCell;

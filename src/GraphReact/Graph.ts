@@ -1,5 +1,11 @@
-import { mxGraph, mxPoint, mxRubberband, mxUtils } from './dependence';
-import { mxCell, PortProp } from './interface';
+import {
+  mxGraph,
+  mxPoint,
+  mxRubberband,
+  mxUtils,
+  mxOutline,
+} from './dependence';
+import { mxCell, PortProp, IOptionsProps } from './interface';
 import { DEFAULT_PORT_SIZE } from './constant';
 import { getCellType } from './util';
 
@@ -8,10 +14,25 @@ class Graph {
   protected vertexs: Record<string, mxCell> = {};
   protected edges: mxCell[] = [];
 
-  constructor(id: string) {
+  constructor(id: string, options: IOptionsProps = {}) {
     this.graph = new mxGraph(document.getElementById(id));
     this.graph.setConnectable(true);
     const graph = this.graph;
+    // 是否可以移动
+    graph.setCellsMovable(options.movable);
+    // 是否可以放大缩小
+    graph.setCellsResizable(
+      typeof options.resizable === 'undefined' ? true : options.resizable,
+    );
+    graph.setCellsEditable(options.editable);
+    // 开启 缩略图
+    if (options.thumbnail) {
+      const thumbnailDom = document.getElementById(options.thumbnail);
+      if (!thumbnailDom) throw 'please check your thumbnail dom';
+      const outln = new mxOutline(graph, thumbnailDom);
+      console.log(outln);
+    }
+
     const mouseListen = {
       currentTmp: null,
       previousStyle: null, // 用于存储 hover 之前的样式

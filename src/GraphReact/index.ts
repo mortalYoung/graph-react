@@ -4,6 +4,7 @@ import {
   styleProps,
   PortProp,
   mxCell,
+  IOptionsProps,
 } from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
@@ -14,8 +15,8 @@ export default class GraphReact extends Graph {
   private bufferVertexs: VertexProp[] = [];
   private bufferEdges: EdgeProp[] = [];
 
-  constructor(id: string) {
-    super(id);
+  constructor(id: string, options?: IOptionsProps) {
+    super(id, options);
   }
 
   /**
