@@ -159,6 +159,11 @@ export default class GraphReact extends Graph {
   render = () => {
     const vertexs = this.bufferVertexs;
     const edges = this.bufferEdges;
+    const factoryCells: {
+      state: mxCell;
+      attributeName: string;
+      attributeValue: string;
+    }[] = []; // 这里对需要二次加工的 cell 做缓存
     this.graph.getModel().beginUpdate();
     // 渲染 vertexs
     vertexs.forEach(vertex => {
@@ -206,6 +211,7 @@ export default class GraphReact extends Graph {
         target,
         source,
         style,
+        className,
       } = edge;
       const stringStyle = transformStyle(style);
       const [sourceRoot, sourcePort] = source.split('.');
@@ -227,7 +233,32 @@ export default class GraphReact extends Graph {
         id,
       );
       e.setStyle('defaultEdge');
+      if (className) {
+        factoryCells.push({
+          state: e,
+          attributeName: 'class',
+          attributeValue: className,
+        });
+      }
     });
     this.graph.getModel().endUpdate();
+    // 渲染结束后, 对 factoryCells 数组里的 cells 进行二次加工
+    factoryCells.forEach(cell => {
+      const el = this.graph.view.getState(cell.state);
+      console.log(el.shape.node);
+      // cell.state.setAttribute(cell.attributeName, cell.attributeValue);
+      el.shape.node
+        .getElementsByTagName('path')[0]
+        .removeAttribute('visibility');
+      el.shape.node
+        .getElementsByTagName('path')[0]
+        .setAttribute('stroke-width', '6');
+      el.shape.node
+        .getElementsByTagName('path')[0]
+        .setAttribute('stroke', 'lightGray');
+      el.shape.node
+        .getElementsByTagName('path')[1]
+        .setAttribute(cell.attributeName, cell.attributeValue);
+    });
   };
 }

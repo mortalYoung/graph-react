@@ -6,7 +6,7 @@ import {
   mxOutline,
 } from './dependence';
 import { mxCell, PortProp, IOptionsProps } from './interface';
-import { DEFAULT_PORT_SIZE } from './constant';
+import { DEFAULT_PORT_SIZE, DEFAULT_GRAPH_HEIGHT } from './constant';
 import { getCellType } from './util';
 
 class Graph {
@@ -15,16 +15,18 @@ class Graph {
   protected edges: mxCell[] = [];
 
   constructor(id: string, options: IOptionsProps = {}) {
-    this.graph = new mxGraph(document.getElementById(id));
-    this.graph.setConnectable(true);
+    const { movable = true, resizable = true, editable = false } = options;
+    const dom = document.getElementById(id);
+    if (!dom) throw 'please check your graph dom';
+    dom.style.height = `${options.height || DEFAULT_GRAPH_HEIGHT}px`;
+    this.graph = new mxGraph(dom);
     const graph = this.graph;
+    graph.setConnectable(true);
     // 是否可以移动
-    graph.setCellsMovable(options.movable);
+    graph.setCellsMovable(movable);
     // 是否可以放大缩小
-    graph.setCellsResizable(
-      typeof options.resizable === 'undefined' ? true : options.resizable,
-    );
-    graph.setCellsEditable(options.editable);
+    graph.setCellsResizable(resizable);
+    graph.setCellsEditable(editable);
     // 开启 缩略图
     if (options.thumbnail) {
       const thumbnailDom = document.getElementById(options.thumbnail);
@@ -79,13 +81,21 @@ class Graph {
         }
       },
     };
-    this.graph.addMouseListener(mouseListen);
+    graph.addMouseListener(mouseListen);
+    this.saveStyle('flow', {
+      strokeDasharray: 8,
+      animation: 'dash 0.5s linear',
+      animationIterationCount: 'infinite',
+    });
   }
 
   /**
    * 存储 style, 用以快速应用 style
    */
-  protected saveStyle = (name: string, style: Record<string, string>) => {
+  protected saveStyle = (
+    name: string,
+    style: Record<string, string | number>,
+  ) => {
     this.graph.getStylesheet().putCellStyle(name, style);
   };
 

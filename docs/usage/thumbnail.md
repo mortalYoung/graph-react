@@ -15,6 +15,7 @@ export default () => {
   useEffect(() => {
     const graph = new GraphReact('helloworld', {
       thumbnail: 'thumbnail-demo',
+      height: 300,
     });
     const data = {
       vertexs: [

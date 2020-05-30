@@ -5,6 +5,7 @@ export interface IOptionsProps {
   movable?: boolean;
   resizable?: boolean;
   editable?: boolean;
+  height?: number;
 }
 export interface VertexProp {
   name: string;
@@ -26,6 +27,7 @@ export interface EdgeProp {
   source: string;
   target: string;
   style?: CSSProperties;
+  className?: string;
 }
 export interface PortProp {
   name: string;
