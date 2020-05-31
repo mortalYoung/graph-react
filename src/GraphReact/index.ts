@@ -245,20 +245,7 @@ export default class GraphReact extends Graph {
     // 渲染结束后, 对 factoryCells 数组里的 cells 进行二次加工
     factoryCells.forEach(cell => {
       const el = this.graph.view.getState(cell.state);
-      console.log(el.shape.node);
-      // cell.state.setAttribute(cell.attributeName, cell.attributeValue);
-      el.shape.node
-        .getElementsByTagName('path')[0]
-        .removeAttribute('visibility');
-      el.shape.node
-        .getElementsByTagName('path')[0]
-        .setAttribute('stroke-width', '6');
-      el.shape.node
-        .getElementsByTagName('path')[0]
-        .setAttribute('stroke', 'lightGray');
-      el.shape.node
-        .getElementsByTagName('path')[1]
-        .setAttribute(cell.attributeName, cell.attributeValue);
+      el.shape.node.setAttribute(cell.attributeName, cell.attributeValue);
     });
   };
 }

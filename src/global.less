@@ -1,7 +1,9 @@
 .flow {
-  stroke-dasharray: 8;
-  animation: dash 0.5s linear;
-  animation-iteration-count: infinite;
+  > path:nth-child(2) {
+    stroke-dasharray: 8;
+    animation: dash 0.5s linear;
+    animation-iteration-count: infinite;
+  }
 }
 @keyframes dash {
   to {
