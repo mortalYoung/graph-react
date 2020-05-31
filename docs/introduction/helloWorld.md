@@ -124,6 +124,7 @@ interface EdgeProp {
   source: string;                        // 源点, 必填, vertex 的名称
   target: string;                        // 目标点, 与上相同
   style?: CSSProperties;                 // 样式
+  className?: string;                    // 给 edge 的 g 节点添加 className
 }
 ```
 -------

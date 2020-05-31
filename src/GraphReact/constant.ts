@@ -6,6 +6,7 @@ export const DEFAULT_PORT_SIZE = {
   width: 5,
   height: 5,
 };
+export const DEFAULT_GRAPH_HEIGHT = 300;
 export const DEFAULT_PORT_LAYOUT = (width: number, height: number) => [
   {
     name: '1',

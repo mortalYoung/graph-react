@@ -76,6 +76,82 @@ export default () => {
 };
 ```
 
+有时候, 你会遇到给 `edge` 增加运行中的情况, 而这也在项目中内置了
+
+```jsx
+import react, { useEffect } from 'react';
+import GraphReact from 'graph-react';
+
+export default () => {
+  useEffect(() => {
+    const graph = new GraphReact('flow-styles');
+    const data = {
+      vertexs: [
+        {
+          name: 'v1',
+          value: 'hello',
+          x: 20,
+          y: 20,
+          height: 30,
+          width: 100,
+        },
+        {
+          name: 'v2',
+          value: 'world',
+          x: 20,
+          y: 150,
+          height: 30,
+          width: 100,
+        },
+      ],
+      edges: [
+        {
+          source: 'v1',
+          target: 'v2',
+        },
+        {
+          source: 'v1.4',
+          target: 'v2.1',
+          className: 'flow',
+        },
+      ],
+    };
+    const styles = {
+      default: {
+        fillColor: '#fff',
+        strokeColor: '#289de9',
+        rounded: true,
+        arcSize: 30,
+      },
+      hover: {},
+    };
+    const portStyles = {
+      default: {
+        fillColor: '#fff',
+        strokeColor: '#999',
+        rounded: true,
+        arcSize: 100,
+      },
+      hover: {},
+    };
+    const edgeStyles = {
+      default: {
+        strokeColor: '#999',
+      },
+      hover: {
+        strokeColor: '#ddd',
+      },
+    };
+    graph.setVertexStyles(styles);
+    graph.setPortStyles(portStyles);
+    graph.setEdgeStyles(edgeStyles);
+    graph.data(data);
+    graph.render();
+  }, []);
+  return <div id="flow-styles"></div>;
+};
+```
+
 ## API
 
 ### Function
