@@ -3,13 +3,13 @@ import {
   EdgeProp,
   styleProps,
   PortProp,
-  mxCell,
   IOptionsProps,
 } from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
 import { mxStylesheet } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
+import { mxCell } from './mxInterface';
 
 export default class GraphReact extends Graph {
   private bufferVertexs: VertexProp[] = [];
@@ -105,7 +105,7 @@ export default class GraphReact extends Graph {
       const vertexs = this.vertexs;
       const current = vertexs[name];
       // 找到连接在 port 上的 edge
-      const ports = current.children.filter((item: mxCell) => item.port);
+      const ports = current.children?.filter((item: mxCell) => item.port) || [];
       ports.forEach((item: mxCell) => {
         if (item.edges) {
           result.push(...item.edges);
@@ -217,11 +217,11 @@ export default class GraphReact extends Graph {
       const [sourceRoot, sourcePort] = source.split('.');
       const [targetRoot, targetPort] = target.split('.');
       const sourceCell =
-        this.vertexs[sourceRoot].children.find(
+        this.vertexs[sourceRoot].children?.find(
           (child: mxCell) => child.name === sourcePort,
         ) || this.vertexs[sourceRoot];
       const targetCell =
-        this.vertexs[targetRoot].children.find(
+        this.vertexs[targetRoot].children?.find(
           (child: mxCell) => child.name === targetPort,
         ) || this.vertexs[targetRoot];
       const e = this.insertEdge(

@@ -1,0 +1,61 @@
+// mxGraph 的类型
+
+type mxGeometry = any;
+export type mxCell = {
+  id?: string;
+  value?: string;
+  geometry: mxGeometry;
+  style?: string;
+  vertex: boolean;
+  edge: boolean;
+  connectable: boolean;
+  visible: boolean;
+  collapsed: boolean;
+  parent: mxCell;
+  source?: mxCell;
+  target?: mxCell;
+  children?: mxCell[];
+  edges?: mxCell[];
+  mxTransient: string[]; // 不会被 mxUtils.clone() 复制的节点
+  getId: () => string | null;
+  setId: (id: string) => void;
+  getValue: () => string | null;
+  setValue: (value: string) => void;
+  valueChanged: (newValue: string) => string;
+  getGeometry: () => mxGeometry;
+  setGeometry: (geometry: mxGeometry) => void;
+  getStyle: () => string;
+  setStyle: (style: string) => void;
+  isVertex: () => boolean;
+  setVertex: (vertex: boolean) => void;
+  isEdge: () => boolean;
+  setEdge: (edge: boolean) => void;
+  isConnectable: () => boolean;
+  setConnectable: (connectable: boolean) => void;
+  isVisible: () => boolean;
+  setVisible: (visible: boolean) => void;
+  isCollapsed: () => void;
+  setCollapsed: (collapsed: boolean) => void;
+  getParent: () => mxCell;
+  setParent: (parent: mxCell) => void;
+  getTerminal: (source?: boolean) => mxCell; // returns the source or targe terminal
+  setTerminal: (terminal: mxCell, isSource?: boolean) => mxCell;
+  getChildCount: () => number;
+  getIndex: (child: mxCell) => number;
+  getChildAt: (index: number) => mxCell | null;
+  insert: (child: mxCell, index?: number) => mxCell;
+  remove: (index: number) => mxCell | null;
+  removeFromParent: () => void;
+  getEdgeCount: () => number;
+  getEdgeIndex: (edge: mxCell) => number;
+  getEdgeAt: (index: number) => mxCell | null;
+  insertEdge: (edge: mxCell, isOutgoing?: boolean) => mxCell;
+  removeEdge: (edge: mxCell, isOutgoing?: boolean) => mxCell;
+  removeFromTerminal: (isSource?: boolean) => void;
+  hasAttribute: (name: string) => any;
+  getAttribute: (name: string, defaultValue?: any) => any;
+  setAttribute: (name: string, value: any) => void;
+  clone: () => mxCell;
+  cloneValue: () => string | null;
+  [key: string]: any;
+};

@@ -5,9 +5,10 @@ import {
   mxUtils,
   mxOutline,
 } from './dependence';
-import { mxCell, PortProp, IOptionsProps } from './interface';
+import { PortProp, IOptionsProps } from './interface';
 import { DEFAULT_PORT_SIZE, DEFAULT_GRAPH_HEIGHT } from './constant';
 import { getCellType } from './util';
+import { mxCell } from './mxInterface';
 
 class Graph {
   protected graph: any;
@@ -31,8 +32,7 @@ class Graph {
     if (options.thumbnail) {
       const thumbnailDom = document.getElementById(options.thumbnail);
       if (!thumbnailDom) throw 'please check your thumbnail dom';
-      const outln = new mxOutline(graph, thumbnailDom);
-      console.log(outln);
+      new mxOutline(graph, thumbnailDom);
     }
 
     const mouseListen = {
@@ -145,8 +145,8 @@ class Graph {
   protected insertEdge = (
     parent: mxCell,
     value = '',
-    source: string,
-    target: string,
+    source: mxCell,
+    target: mxCell,
     style: string,
     id?: string,
   ) => {
