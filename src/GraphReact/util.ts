@@ -1,4 +1,4 @@
-import { mxCell } from './interface';
+import { mxCell } from './mxInterface';
 
 export const transformStyle = (style?: Record<string, any>) => {
   let result = '';
