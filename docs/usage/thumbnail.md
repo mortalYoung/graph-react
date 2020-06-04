@@ -38,8 +38,8 @@ export default () => {
       ],
       edges: [
         {
-          source: 'v1',
-          target: 'v2',
+          source: 'v1.5',
+          target: 'v2.2',
         },
       ],
     };

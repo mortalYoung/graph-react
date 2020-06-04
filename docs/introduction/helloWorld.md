@@ -32,8 +32,8 @@ export default () => {
     ];
     const edges = [
       {
-        source: 'v1',
-        target: 'v2',
+        source: 'v1.5',
+        target: 'v2.2',
       },
     ];
     graph.setVertexs(vertexs);
@@ -72,8 +72,8 @@ export default () => {
       ],
       edges: [
         {
-          source: 'v1',
-          target: 'v2',
+          source: 'v1.5',
+          target: 'v2.2',
         },
       ],
     };

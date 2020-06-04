@@ -22,6 +22,18 @@ class Graph {
     dom.style.height = `${options.height || DEFAULT_GRAPH_HEIGHT}px`;
     this.graph = new mxGraph(dom);
     const graph = this.graph;
+    // 一个 port 只能连接一条 edge
+    graph.connectionHandler.isValidSource = (cell: mxCell) => {
+      return !cell.edges && !cell.edge;
+    };
+    // 一个 port 只能接受一条 edge
+    graph.connectionHandler.isValidTarget = (cell: mxCell) => {
+      return !cell.edges && !cell.edge;
+    };
+    // 只有 vertex 可以移动
+    graph.isCellMovable = (cell: mxCell) => {
+      return !cell.edge && !cell.port;
+    };
     graph.setConnectable(true);
     // 是否可以移动
     graph.setCellsMovable(movable);
