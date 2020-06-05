@@ -22,13 +22,15 @@ class Graph {
     dom.style.height = `${options.height || DEFAULT_GRAPH_HEIGHT}px`;
     this.graph = new mxGraph(dom);
     const graph = this.graph;
+    // 无法没有 terminal 的 edge
+    graph.allowDanglingEdges = false;
     // 一个 port 只能连接一条 edge
     graph.connectionHandler.isValidSource = (cell: mxCell) => {
-      return !cell.edges && !cell.edge;
+      return !cell.edges && !cell.edge && cell.connectable;
     };
     // 一个 port 只能接受一条 edge
     graph.connectionHandler.isValidTarget = (cell: mxCell) => {
-      return !cell.edges && !cell.edge;
+      return !cell.edges && !cell.edge && cell.connectable;
     };
     // 只有 vertex 可以移动
     graph.isCellMovable = (cell: mxCell) => {
