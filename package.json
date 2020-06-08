@@ -2,7 +2,7 @@
   "private": false,
   "name": "graph-react",
   "homepage": "http://mortalYoung.github.io/graph-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "mortalYoung",
   "license": "ISC",
   "description": "a graph generator based on mxGraph",
