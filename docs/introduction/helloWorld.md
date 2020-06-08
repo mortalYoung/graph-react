@@ -105,7 +105,7 @@ interface VertexProp {
   name: string;                         // vertex 名称
   parent?: mxCell;                      // 父级节点, 默认为 root
   id?: string;                          // id, 默认为空
-  value?: string;                       // value, 可选
+  value?: string | React.ReactNode;     // value, 可选
   x?: number;                           // x 轴位置，默认为 0
   y?: number;                           // y 轴位置，默认为 0
   width?: number;                       // 宽度, 默认为 80px

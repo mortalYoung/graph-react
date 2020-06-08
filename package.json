@@ -10,6 +10,7 @@
     "start": "dumi dev",
     "docs:build": "dumi build",
     "build": "father-build",
+    "release": "npm run build && npm publish",
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
@@ -48,7 +49,8 @@
   },
   "dependencies": {
     "mxgraph": "^4.1.1",
-    "react": "^16.12.0"
+    "react": "^16.12.0",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
@@ -70,6 +72,7 @@
     "react",
     "mxgraph",
     "react-graph",
+    "graph-react",
     "graph",
     "react-component"
   ]

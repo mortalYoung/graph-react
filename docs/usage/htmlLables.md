@@ -1,11 +1,11 @@
 ---
-title: 设置项
+title: html 标签
 order: 1
 ---
 
-## options
+## html 标签
 
-通过简单的设置, 可以对 `graph` 进行一些操作上的修改
+我们不仅支持 `String` 类型的 `value`, 同样支持 `React.ReactNode` 类型的 `value`
 
 ```jsx
 import react, { useEffect } from 'react';
@@ -13,16 +13,12 @@ import GraphReact from 'graph-react';
 
 export default () => {
   useEffect(() => {
-    const graph = new GraphReact('helloworld', {
-      movable: false,
-      resizable: false,
-      editable: true,
-    });
+    const graph = new GraphReact('helloworld');
     const data = {
       vertexs: [
         {
           name: 'v1',
-          value: 'hello',
+          value: <p style={{ margin: 0 }}>hello</p>,
           x: 20,
           y: 20,
           height: 30,
@@ -79,28 +75,3 @@ export default () => {
   return <div id="helloworld"></div>;
 };
 ```
-
-## API
-
-### Function
-
-<!-- prettier-ignore-start -->
-| 函数名 | 说明 | 类型 | 默认值 |
-| ----- | ---- | ---- | ----- |
-| `options` | 设置 `graph` 的属性 | `IOptionsProps` | `null` |
-<!-- prettier-ignore-end -->
-
-### Interface
-
-<!-- prettier-ignore-start -->
-
-```typescript
-interface IOptionsProps {
-  thumbnail?: string;             // 是否开启缩略图, 参数为 div 的 id, 默认不开启
-  movable?: boolean;              // cell 是否可以移动, 默认为 true
-  resizable?: boolean;            // cell 是否可以放大缩小, 默认为 true
-  editable?: boolean;             // cell 是否可以编辑, 默认为 false
-  height?: number;                // graph 的高度, 默认值为 300
-}
-``` 
-<!-- prettier-ignore-end -->

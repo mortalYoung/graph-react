@@ -11,7 +11,7 @@ export interface VertexProp {
   name: string;
   parent?: mxCell;
   id?: string;
-  value?: string;
+  value?: string | React.ReactNode;
   x?: number;
   y?: number;
   width?: number;

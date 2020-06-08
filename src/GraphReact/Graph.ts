@@ -1,3 +1,5 @@
+import react from 'react';
+import ReactDOMServer from 'react-dom/server';
 import {
   mxGraph,
   mxPoint,
@@ -16,14 +18,56 @@ class Graph {
   protected edges: mxCell[] = [];
 
   constructor(id: string, options: IOptionsProps = {}) {
-    const { movable = true, resizable = true, editable = false } = options;
     const dom = document.getElementById(id);
     if (!dom) throw 'please check your graph dom';
     dom.style.height = `${options.height || DEFAULT_GRAPH_HEIGHT}px`;
     this.graph = new mxGraph(dom);
+    this.initOptions(options);
+    this.initConnectHandle();
+    this.initHandleListener();
+    this.initHtmlLabels();
+    this.saveStyle('flow', {
+      strokeDasharray: 8,
+      animation: 'dash 0.5s linear',
+      animationIterationCount: 'infinite',
+    });
+  }
+
+  private initHtmlLabels = () => {
     const graph = this.graph;
+    graph.convertValueToString = (cell: mxCell) => {
+      const element = react.createElement(react.Fragment, {}, cell.value);
+      const stringElement = ReactDOMServer.renderToStaticMarkup(element);
+      return stringElement;
+    };
+  };
+
+  private initOptions = (options: IOptionsProps) => {
+    const graph = this.graph;
+    const {
+      movable = true,
+      resizable = true,
+      editable = false,
+      thumbnail,
+    } = options;
+    graph.setHtmlLabels(true);
     // 无法没有 terminal 的 edge
     graph.allowDanglingEdges = false;
+    graph.setConnectable(true);
+    // 是否可以移动
+    graph.setCellsMovable(movable);
+    // 是否可以放大缩小
+    graph.setCellsResizable(resizable);
+    graph.setCellsEditable(editable);
+    // 开启 缩略图
+    if (thumbnail) {
+      const thumbnailDom = document.getElementById(thumbnail);
+      if (!thumbnailDom) throw 'please check your thumbnail dom';
+      new mxOutline(graph, thumbnailDom);
+    }
+  };
+  private initConnectHandle = () => {
+    const graph = this.graph;
     // 一个 port 只能连接一条 edge
     graph.connectionHandler.isValidSource = (cell: mxCell) => {
       return !cell.edges && !cell.edge && cell.connectable;
@@ -36,19 +80,9 @@ class Graph {
     graph.isCellMovable = (cell: mxCell) => {
       return !cell.edge && !cell.port;
     };
-    graph.setConnectable(true);
-    // 是否可以移动
-    graph.setCellsMovable(movable);
-    // 是否可以放大缩小
-    graph.setCellsResizable(resizable);
-    graph.setCellsEditable(editable);
-    // 开启 缩略图
-    if (options.thumbnail) {
-      const thumbnailDom = document.getElementById(options.thumbnail);
-      if (!thumbnailDom) throw 'please check your thumbnail dom';
-      new mxOutline(graph, thumbnailDom);
-    }
-
+  };
+  private initHandleListener = () => {
+    const graph = this.graph;
     const mouseListen = {
       currentTmp: null,
       previousStyle: null, // 用于存储 hover 之前的样式
@@ -96,12 +130,7 @@ class Graph {
       },
     };
     graph.addMouseListener(mouseListen);
-    this.saveStyle('flow', {
-      strokeDasharray: 8,
-      animation: 'dash 0.5s linear',
-      animationIterationCount: 'infinite',
-    });
-  }
+  };
 
   /**
    * 存储 style, 用以快速应用 style
