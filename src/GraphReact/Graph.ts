@@ -215,7 +215,7 @@ class Graph {
   protected insertVertex = (
     name: string,
     parent: mxCell,
-    value: string,
+    value: string | React.ReactNode,
     x: number,
     y: number,
     width: number,
