@@ -57,3 +57,16 @@ export interface ListenProps {
   mouseUp: Function;
   mouseMove: Function;
 }
+
+export interface IContextProps {
+  key: string;
+  label: React.ReactNode;
+  seperator: boolean;
+  disabled?: boolean;
+  onClick?: Function;
+  children?: IContextProps[];
+}
+export interface IContextOptionsProps {
+  className?: string;
+  bannedLabels?: string[];
+}

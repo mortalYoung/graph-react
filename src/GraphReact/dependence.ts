@@ -11,6 +11,7 @@ const {
   mxCellTracker,
   mxCellHighlight,
   mxOutline,
+  mxEvent,
 } = mxObject;
 mxConstants.HIGHLIGHT_OPACITY = 0;
 export {
@@ -24,4 +25,5 @@ export {
   mxCellTracker,
   mxCellHighlight,
   mxOutline,
+  mxEvent,
 };
