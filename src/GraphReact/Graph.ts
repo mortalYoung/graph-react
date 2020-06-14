@@ -16,10 +16,12 @@ class Graph {
   protected graph: any;
   protected vertexs: Record<string, mxCell> = {};
   protected edges: mxCell[] = [];
+  protected containerDom: HTMLElement;
 
   constructor(id: string, options: IOptionsProps = {}) {
     const dom = document.getElementById(id);
     if (!dom) throw 'please check your graph dom';
+    this.containerDom = dom;
     dom.style.height = `${options.height || DEFAULT_GRAPH_HEIGHT}px`;
     this.graph = new mxGraph(dom);
     this.initOptions(options);

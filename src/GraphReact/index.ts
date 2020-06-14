@@ -4,10 +4,12 @@ import {
   styleProps,
   PortProp,
   IOptionsProps,
+  IContextProps,
+  IContextOptionsProps,
 } from './interface';
 import Graph from './Graph';
 import { transformStyle } from './util';
-import { mxStylesheet } from './dependence';
+import { mxStylesheet, mxEvent } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
 import { mxCell } from './mxInterface';
 
@@ -247,5 +249,158 @@ export default class GraphReact extends Graph {
       const el = this.graph.view.getState(cell.state);
       el.shape.node.setAttribute(cell.attributeName, cell.attributeValue);
     });
+  };
+  /**
+   * 通过 data 创建 context menu
+   */
+  registerContextMenu = (
+    contextData: IContextProps[] | Function = [],
+    options: IContextOptionsProps = {},
+  ) => {
+    const graph = this.graph;
+    const { bannedLabels = [], className = '', mode } = options;
+    // 将 container 的原生右键点击事件禁用
+    mxEvent.disableContextMenu(this.containerDom);
+    const mxPopupMenuShowMenu = graph.popupMenuHandler.showMenu;
+    graph.popupMenuHandler.autoExpand = true;
+    // override
+    graph.popupMenuHandler.showMenu = function() {
+      const wrapDom = this.div as HTMLElement;
+      const classNames = wrapDom.className.split(' ');
+      const classNameSet = new Set(classNames).add('graphPopup').add(className);
+      const newClassNames = Array.from(classNameSet);
+      wrapDom.className = newClassNames.join(' ');
+      mxPopupMenuShowMenu.apply(this, arguments);
+    };
+
+    // override
+    graph.popupMenuHandler.createSubmenu = function(parent: any) {
+      parent.table = document.createElement('table');
+      parent.table.className = 'mxPopupMenu';
+
+      parent.tbody = document.createElement('tbody');
+      parent.table.appendChild(parent.tbody);
+
+      parent.div = document.createElement('div');
+      parent.div.className = `mxPopupMenu graphPopup ${className}`;
+
+      parent.div.style.position = 'absolute';
+      parent.div.style.display = 'inline';
+      parent.div.style.zIndex = this.zIndex;
+
+      parent.div.appendChild(parent.table);
+
+      // const img = document.createElement('img');
+      // img.setAttribute('src', this.submenuImage);
+
+      // Last column of the submenu item in the parent menu
+      // const td = parent.firstChild.nextSibling.nextSibling;
+      // td.appendChild(img);
+    };
+    const bannedLabelsList = ['svg']
+      .concat(bannedLabels)
+      .map(label => label.toLocaleLowerCase());
+    graph.popupMenuHandler.factoryMethod = (
+      menu: any,
+      cell: mxCell,
+      evt: PointerEvent,
+    ) => {
+      // 排除掉 svg 等标签的菜单
+      if (
+        bannedLabelsList.includes(
+          (evt.target as HTMLElement).nodeName.toLocaleLowerCase(),
+        )
+      ) {
+        return;
+      }
+      // 用户选择自定义标签
+      if (typeof contextData === 'function' && mode === 'customize') {
+        const contextMenuData: IContextProps | undefined = contextData(cell);
+        if (!contextMenuData) return;
+        const {
+          disabled = true,
+          label,
+          onClick,
+          children,
+          seperator,
+        } = contextMenuData;
+        const item = menu.addItem(
+          label,
+          null,
+          () => {
+            if (onClick) {
+              onClick(cell);
+            }
+          },
+          null,
+          true,
+          disabled,
+        );
+
+        if (seperator) {
+          menu.addSeparator();
+        }
+
+        if (children?.length) {
+          children.forEach(child => {
+            menu.addItem(
+              child.label,
+              null,
+              () => {
+                if (child.onClick) {
+                  child.onClick(cell);
+                }
+              },
+              item,
+              true,
+              child.disabled,
+            );
+          });
+        }
+      } else {
+        for (let i = 0; i < contextData.length; i++) {
+          const {
+            disabled = true,
+            label,
+            onClick,
+            children,
+            seperator,
+          } = (contextData as IContextProps[])[i];
+          const item = menu.addItem(
+            label,
+            null,
+            () => {
+              if (onClick) {
+                onClick(cell);
+              }
+            },
+            null,
+            true,
+            disabled,
+          );
+
+          if (seperator) {
+            menu.addSeparator();
+          }
+
+          if (children?.length) {
+            children.forEach(child => {
+              menu.addItem(
+                child.label,
+                null,
+                () => {
+                  if (child.onClick) {
+                    child.onClick(cell);
+                  }
+                },
+                item,
+                true,
+                child.disabled,
+              );
+            });
+          }
+        }
+      }
+    };
   };
 }

@@ -183,7 +183,8 @@ interface VertexProp {
   relative?: boolean;                   // 是否为 relative, 默认为 false
   ports?: PortProp[]                    // vertex 上的 ports
 }
-````
+```
+---
 
 ```typescript
 interface PortProp extends Partial<VertexProp> {
