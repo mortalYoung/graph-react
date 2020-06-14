@@ -68,5 +68,6 @@ export interface IContextProps {
 }
 export interface IContextOptionsProps {
   className?: string;
+  mode?: 'customize';
   bannedLabels?: string[];
 }

@@ -254,18 +254,15 @@ export default class GraphReact extends Graph {
    * 通过 data 创建 context menu
    */
   registerContextMenu = (
-    contextData: IContextProps[] = [],
+    contextData: IContextProps[] | Function = [],
     options: IContextOptionsProps = {},
   ) => {
     const graph = this.graph;
-    const { bannedLabels = [], className = '' } = options;
-    const bannedLabelsList = ['svg']
-      .concat(bannedLabels)
-      .map(label => label.toLocaleLowerCase());
+    const { bannedLabels = [], className = '', mode } = options;
     // 将 container 的原生右键点击事件禁用
     mxEvent.disableContextMenu(this.containerDom);
-
     const mxPopupMenuShowMenu = graph.popupMenuHandler.showMenu;
+    graph.popupMenuHandler.autoExpand = true;
     // override
     graph.popupMenuHandler.showMenu = function() {
       const wrapDom = this.div as HTMLElement;
@@ -293,20 +290,22 @@ export default class GraphReact extends Graph {
 
       parent.div.appendChild(parent.table);
 
-      var img = document.createElement('img');
-      img.setAttribute('src', this.submenuImage);
+      // const img = document.createElement('img');
+      // img.setAttribute('src', this.submenuImage);
 
       // Last column of the submenu item in the parent menu
-      const td = parent.firstChild.nextSibling.nextSibling;
-      td.appendChild(img);
+      // const td = parent.firstChild.nextSibling.nextSibling;
+      // td.appendChild(img);
     };
-
-    // contextMenu 构造函数
+    const bannedLabelsList = ['svg']
+      .concat(bannedLabels)
+      .map(label => label.toLocaleLowerCase());
     graph.popupMenuHandler.factoryMethod = (
       menu: any,
       cell: mxCell,
       evt: PointerEvent,
     ) => {
+      // 排除掉 svg 等标签的菜单
       if (
         bannedLabelsList.includes(
           (evt.target as HTMLElement).nodeName.toLocaleLowerCase(),
@@ -314,14 +313,17 @@ export default class GraphReact extends Graph {
       ) {
         return;
       }
-      for (let i = 0; i < contextData.length; i++) {
+      // 用户选择自定义标签
+      if (typeof contextData === 'function' && mode === 'customize') {
+        const contextMenuData: IContextProps | undefined = contextData(cell);
+        if (!contextMenuData) return;
         const {
           disabled = true,
           label,
           onClick,
           children,
           seperator,
-        } = contextData[i];
+        } = contextMenuData;
         const item = menu.addItem(
           label,
           null,
@@ -354,6 +356,49 @@ export default class GraphReact extends Graph {
               child.disabled,
             );
           });
+        }
+      } else {
+        for (let i = 0; i < contextData.length; i++) {
+          const {
+            disabled = true,
+            label,
+            onClick,
+            children,
+            seperator,
+          } = (contextData as IContextProps[])[i];
+          const item = menu.addItem(
+            label,
+            null,
+            () => {
+              if (onClick) {
+                onClick(cell);
+              }
+            },
+            null,
+            true,
+            disabled,
+          );
+
+          if (seperator) {
+            menu.addSeparator();
+          }
+
+          if (children?.length) {
+            children.forEach(child => {
+              menu.addItem(
+                child.label,
+                null,
+                () => {
+                  if (child.onClick) {
+                    child.onClick(cell);
+                  }
+                },
+                item,
+                true,
+                child.disabled,
+              );
+            });
+          }
         }
       }
     };
