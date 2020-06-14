@@ -258,26 +258,49 @@ export default class GraphReact extends Graph {
     options: IContextOptionsProps = {},
   ) => {
     const graph = this.graph;
+    const { bannedLabels = [], className = '' } = options;
+    const bannedLabelsList = ['svg']
+      .concat(bannedLabels)
+      .map(label => label.toLocaleLowerCase());
     // 将 container 的原生右键点击事件禁用
     mxEvent.disableContextMenu(this.containerDom);
 
     const mxPopupMenuShowMenu = graph.popupMenuHandler.showMenu;
+    // override
     graph.popupMenuHandler.showMenu = function() {
       const wrapDom = this.div as HTMLElement;
-      if (options.className) {
-        const classNames = wrapDom.className.split(' ');
-        const newClassNames = Array.from(
-          new Set(classNames).add(options.className),
-        );
-        wrapDom.className = newClassNames.join(' ');
-      }
-      console.log('parent, row', arguments);
+      const classNames = wrapDom.className.split(' ');
+      const classNameSet = new Set(classNames).add('graphPopup').add(className);
+      const newClassNames = Array.from(classNameSet);
+      wrapDom.className = newClassNames.join(' ');
       mxPopupMenuShowMenu.apply(this, arguments);
     };
-    const { bannedLabels = [] } = options;
-    const bannedLabelsList = ['svg']
-      .concat(bannedLabels)
-      .map(label => label.toLocaleLowerCase());
+
+    // override
+    graph.popupMenuHandler.createSubmenu = function(parent: any) {
+      parent.table = document.createElement('table');
+      parent.table.className = 'mxPopupMenu';
+
+      parent.tbody = document.createElement('tbody');
+      parent.table.appendChild(parent.tbody);
+
+      parent.div = document.createElement('div');
+      parent.div.className = `mxPopupMenu graphPopup ${className}`;
+
+      parent.div.style.position = 'absolute';
+      parent.div.style.display = 'inline';
+      parent.div.style.zIndex = this.zIndex;
+
+      parent.div.appendChild(parent.table);
+
+      var img = document.createElement('img');
+      img.setAttribute('src', this.submenuImage);
+
+      // Last column of the submenu item in the parent menu
+      const td = parent.firstChild.nextSibling.nextSibling;
+      td.appendChild(img);
+    };
+
     // contextMenu 构造函数
     graph.popupMenuHandler.factoryMethod = (
       menu: any,
