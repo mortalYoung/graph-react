@@ -1,5 +1,3 @@
-// mxGraph 的类型
-
 type mxGeometry = any;
 export type mxCell = {
   id?: string;

@@ -10,7 +10,7 @@ import {
 import { PortProp, IOptionsProps } from './interface';
 import { DEFAULT_PORT_SIZE, DEFAULT_GRAPH_HEIGHT } from './constant';
 import { getCellType } from './util';
-import { mxCell } from './mxInterface';
+import { mxCell } from '../mxGraph';
 
 class Graph {
   protected graph: any;

@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { mxCell } from './mxInterface';
+import { mxCell } from '../mxGraph';
 export interface IOptionsProps {
   thumbnail?: string;
   movable?: boolean;

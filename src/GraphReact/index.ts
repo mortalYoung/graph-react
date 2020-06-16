@@ -11,7 +11,7 @@ import Graph from './Graph';
 import { transformStyle } from './util';
 import { mxStylesheet, mxEvent } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
-import { mxCell } from './mxInterface';
+import { mxCell } from '../mxGraph';
 
 export default class GraphReact extends Graph {
   private bufferVertexs: VertexProp[] = [];
