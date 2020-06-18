@@ -1,7 +1,7 @@
 /**
  * github: https://github.com/jgraph/mxgraph/blob/master/javascript/mxClient.js
  */
-export type mxClient = {
+export type ImxClient = {
   VERSION: string;
   IS_IE: boolean;
   IS_IE6: boolean;
