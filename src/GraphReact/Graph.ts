@@ -10,12 +10,12 @@ import {
 import { PortProp, IOptionsProps } from './interface';
 import { DEFAULT_PORT_SIZE, DEFAULT_GRAPH_HEIGHT } from './constant';
 import { getCellType } from './util';
-import { mxCell } from '../mxGraph';
+import { ImxCell } from '../mxGraph';
 
 class Graph {
   protected graph: any;
-  protected vertexs: Record<string, mxCell> = {};
-  protected edges: mxCell[] = [];
+  protected vertexs: Record<string, ImxCell> = {};
+  protected edges: ImxCell[] = [];
   protected containerDom: HTMLElement;
 
   constructor(id: string, options: IOptionsProps = {}) {
@@ -37,7 +37,7 @@ class Graph {
 
   private initHtmlLabels = () => {
     const graph = this.graph;
-    graph.convertValueToString = (cell: mxCell) => {
+    graph.convertValueToString = (cell: ImxCell) => {
       const element = react.createElement(react.Fragment, {}, cell.value);
       const stringElement = ReactDOMServer.renderToStaticMarkup(element);
       return stringElement;
@@ -71,15 +71,15 @@ class Graph {
   private initConnectHandle = () => {
     const graph = this.graph;
     // 一个 port 只能连接一条 edge
-    graph.connectionHandler.isValidSource = (cell: mxCell) => {
+    graph.connectionHandler.isValidSource = (cell: ImxCell) => {
       return !cell.edges && !cell.edge && cell.connectable;
     };
     // 一个 port 只能接受一条 edge
-    graph.connectionHandler.isValidTarget = (cell: mxCell) => {
+    graph.connectionHandler.isValidTarget = (cell: ImxCell) => {
       return !cell.edges && !cell.edge && cell.connectable;
     };
     // 只有 vertex 可以移动
-    graph.isCellMovable = (cell: mxCell) => {
+    graph.isCellMovable = (cell: ImxCell) => {
       return !cell.edge && !cell.port;
     };
   };
@@ -188,10 +188,10 @@ class Graph {
    * 插入 edge
    */
   protected insertEdge = (
-    parent: mxCell,
+    parent: ImxCell,
     value = '',
-    source: mxCell,
-    target: mxCell,
+    source: ImxCell,
+    target: ImxCell,
     style: string,
     id?: string,
   ) => {
@@ -216,7 +216,7 @@ class Graph {
    */
   protected insertVertex = (
     name: string,
-    parent: mxCell,
+    parent: ImxCell,
     value: string | React.ReactNode,
     x: number,
     y: number,
@@ -248,7 +248,7 @@ class Graph {
   /**
    * 创建 ports
    */
-  protected createPorts(node: mxCell, ports: PortProp[]) {
+  protected createPorts(node: ImxCell, ports: PortProp[]) {
     const num = ports.length;
     for (let index = 0; index < num; index++) {
       const portSetting = ports[index];

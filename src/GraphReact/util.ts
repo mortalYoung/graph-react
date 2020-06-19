@@ -1,4 +1,4 @@
-import { mxCell } from './mxInterface';
+import { ImxCell } from '../mxGraph';
 
 export const transformStyle = (style?: Record<string, any>) => {
   let result = '';
@@ -12,7 +12,7 @@ export const transformStyle = (style?: Record<string, any>) => {
   return result;
 };
 
-export const getCellType = (cell: mxCell) => {
+export const getCellType = (cell: ImxCell) => {
   if (!cell) return 'unknown';
   if (cell.port) {
     return 'Port';

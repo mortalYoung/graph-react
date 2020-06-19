@@ -11,7 +11,7 @@ import Graph from './Graph';
 import { transformStyle } from './util';
 import { mxStylesheet, mxEvent } from './dependence';
 import { DEFAULT_VERTEX_SIZE, DEFAULT_PORT_LAYOUT } from './constant';
-import { mxCell } from '../mxGraph';
+import { ImxCell } from '../mxGraph';
 
 export default class GraphReact extends Graph {
   private bufferVertexs: VertexProp[] = [];
@@ -107,8 +107,9 @@ export default class GraphReact extends Graph {
       const vertexs = this.vertexs;
       const current = vertexs[name];
       // 找到连接在 port 上的 edge
-      const ports = current.children?.filter((item: mxCell) => item.port) || [];
-      ports.forEach((item: mxCell) => {
+      const ports =
+        current.children?.filter((item: ImxCell) => item.port) || [];
+      ports.forEach((item: ImxCell) => {
         if (item.edges) {
           result.push(...item.edges);
         }
@@ -162,7 +163,7 @@ export default class GraphReact extends Graph {
     const vertexs = this.bufferVertexs;
     const edges = this.bufferEdges;
     const factoryCells: {
-      state: mxCell;
+      state: ImxCell;
       attributeName: string;
       attributeValue: string;
     }[] = []; // 这里对需要二次加工的 cell 做缓存
@@ -220,11 +221,11 @@ export default class GraphReact extends Graph {
       const [targetRoot, targetPort] = target.split('.');
       const sourceCell =
         this.vertexs[sourceRoot].children?.find(
-          (child: mxCell) => child.name === sourcePort,
+          (child: ImxCell) => child.name === sourcePort,
         ) || this.vertexs[sourceRoot];
       const targetCell =
         this.vertexs[targetRoot].children?.find(
-          (child: mxCell) => child.name === targetPort,
+          (child: ImxCell) => child.name === targetPort,
         ) || this.vertexs[targetRoot];
       const e = this.insertEdge(
         parent,
@@ -302,7 +303,7 @@ export default class GraphReact extends Graph {
       .map(label => label.toLocaleLowerCase());
     graph.popupMenuHandler.factoryMethod = (
       menu: any,
-      cell: mxCell,
+      cell: ImxCell,
       evt: PointerEvent,
     ) => {
       // 排除掉 svg 等标签的菜单

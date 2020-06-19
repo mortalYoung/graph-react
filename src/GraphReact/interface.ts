@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { mxCell } from '../mxGraph';
+import { ImxCell } from '../mxGraph';
 export interface IOptionsProps {
   thumbnail?: string;
   movable?: boolean;
@@ -9,7 +9,7 @@ export interface IOptionsProps {
 }
 export interface VertexProp {
   name: string;
-  parent?: mxCell;
+  parent?: ImxCell;
   id?: string;
   value?: string | React.ReactNode;
   x?: number;
@@ -21,7 +21,7 @@ export interface VertexProp {
   ports?: PortProp[];
 }
 export interface EdgeProp {
-  parent?: mxCell;
+  parent?: ImxCell;
   id?: string;
   value?: string;
   source: string;

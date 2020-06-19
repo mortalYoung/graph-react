@@ -59,4 +59,6 @@ export class ImxCell {
   setAttribute(name: string, value: any): void;
   clone(): ImxCell;
   cloneValue(): string | null;
+
+  [key: string]: any;
 }
